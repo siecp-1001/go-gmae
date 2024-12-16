@@ -4,9 +4,7 @@ from game.go import Board, opponent_color
 class Agent:
     """Abstract stateless agent."""
     def __init__(self, color):
-        """
-        :param color: 'BLACK' or 'WHITE'
-        """
+        
         self.color = color
 
     @classmethod

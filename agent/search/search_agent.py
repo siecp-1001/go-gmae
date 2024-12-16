@@ -34,7 +34,7 @@ class AlphaBetaAgent(SearchAgent):
         return actions[0] if len(actions) > 0 else None
 
     def max_value(self, board, depth, alpha, beta):
-        """Return the highest score and the corresponding subsequent actions"""
+        """Return the highest score """
         if self.terminal_test(board) or depth == self.depth:
             return self.eval_func(board, self.color), []
 
@@ -60,13 +60,13 @@ class AlphaBetaAgent(SearchAgent):
         return max_score, max_score_actions
 
     def min_value(self, board, depth, alpha, beta):
-        """Return the lowest score and the corresponding subsequent actions"""
+        """Return the lowest score """
         if self.terminal_test(board) or depth == self.depth:
             return self.eval_func(board, self.color), []
 
         min_score = float("inf")
         min_score_actions = None
-        # Prune the legal actions
+       
         legal_actions = board.get_legal_actions()
         if self.pruning_actions and len(legal_actions) > self.pruning_actions:
             legal_actions = random.sample(legal_actions, self.pruning_actions)
