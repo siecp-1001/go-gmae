@@ -47,13 +47,13 @@ def calc_group_liberty_var(group: Group):
 
 
 def eval_group(group: Group, board: Board):
-    """Evaluate the liveliness of group; higher score, more endangered"""
+    """Evaluate the liveliness """
     if group.num_liberty > 3:
         return 0
     elif group.num_liberty == 1:
         return 5
 
-    # Till here, group has either 2 or 3 liberties.
+    
     var_x = np.var([x[0] for x in group.liberties])
     var_y = np.var([x[1] for x in group.liberties])
     var_sum = var_x + var_y

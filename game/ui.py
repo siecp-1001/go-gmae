@@ -1,7 +1,4 @@
 import pygame
-"""
-This file is the GUI on top of the game backend.
-"""
 
 BACKGROUND = 'game/images/ramin.jpg'
 BOARD_SIZE = (820, 820)
@@ -18,7 +15,7 @@ def get_rbg(color):
 
 
 def coords(point):
-    """Return the coordinate of a stone drawn on board"""
+   
     return 5 + point[0] * 40, 5 + point[1] * 40
 
 
@@ -28,13 +25,13 @@ def leftup_corner(point):
 
 class UI:
     def __init__(self):
-        """Create, initialize and draw an empty board."""
+       
         self.outline = pygame.Rect(45, 45, 720, 720)
         self.screen = None
         self.background = None
 
     def initialize(self):
-        """This method should only be called once, when initializing the board."""
+        
       
         pygame.init()
         pygame.display.set_caption('Goban')
@@ -42,7 +39,7 @@ class UI:
         self.background = pygame.image.load(BACKGROUND).convert()
 
         pygame.draw.rect(self.background, BLACK, self.outline, 3)
-        # Outline is inflated here for future use as a collidebox for the mouse
+       
         self.outline.inflate_ip(20, 20)
         for i in range(18):
             for j in range(18):

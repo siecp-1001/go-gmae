@@ -9,13 +9,7 @@ from argparse import ArgumentParser
 
 class Match:
     def __init__(self, agent_black=None, agent_white=None, gui=True, dir_save=None):
-        """
-        BLACK always has the first move on the center of the board.
-        :param agent_black: agent or None(human)
-        :param agent_white: agent or None(human)
-        :param gui: if show GUI; always true if there are human playing
-        :param dir_save: directory to save board image if GUI is shown; no save for None
-        """
+      
         self.agent_black = agent_black
         self.agent_white = agent_white
 
@@ -25,7 +19,7 @@ class Match:
         self.ui = UI() if gui else None
         self.dir_save = dir_save
 
-        # Metadata
+        
         self.time_elapsed = None
 
     @property
@@ -47,35 +41,35 @@ class Match:
             self._start_without_ui()
 
     def _start_with_ui(self):
-        """Start the game with GUI."""
+        
         self.ui.initialize()
         self.time_elapsed = time.time()
 
-        # First move is fixed on the center of board
+        
         first_move = (10, 10)
         self.board.put_stone(first_move, check_legal=False)
         self.ui.draw(first_move, opponent_color(self.board.next))
 
-        # Take turns to play move
+        
         while self.board.winner is None:
             if self.board.next == 'BLACK':
                 point = self.perform_one_move(self.agent_black)
             else:
                 point = self.perform_one_move(self.agent_white)
 
-            # Check if action is legal
+            
             if point not in self.board.legal_actions:
                 continue
 
-            # Apply action
+            
             prev_legal_actions = self.board.legal_actions.copy()
             self.board.put_stone(point, check_legal=False)
-            # Remove previous legal actions on board
+           
             for action in prev_legal_actions:
                 self.ui.remove(action)
-            # Draw new point
+            
             self.ui.draw(point, opponent_color(self.board.next))
-            # Update new legal actions and any removed groups
+            
             if self.board.winner:
                 for group in self.board.removed_groups:
                     for point in group.points:
@@ -93,21 +87,20 @@ class Match:
             print('Board image saved in file ' + path_file)
 
     def _start_without_ui(self):
-        """Start the game without GUI. Only possible when no human is playing."""
-        # First move is fixed on the center of board
+       
         self.time_elapsed = time.time()
         first_move = (10, 10)
         self.board.put_stone(first_move, check_legal=False)
 
-        # Take turns to play move
+        
         while self.board.winner is None:
             if self.board.next == 'BLACK':
                 point = self.perform_one_move(self.agent_black)
             else:
                 point = self.perform_one_move(self.agent_white)
 
-            # Apply action
-            self.board.put_stone(point, check_legal=False)  # Assuming agent always gives legal actions
+            
+            self.board.put_stone(point, check_legal=False)  
 
         if self.board.end_by_no_legal_actions:
             print('Game ends early (no legal action is available for %s)' % self.board.next)

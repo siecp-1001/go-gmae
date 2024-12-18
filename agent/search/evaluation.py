@@ -1,31 +1,27 @@
 from game.go import Board, opponent_color
 from agent.util import get_num_endangered_groups, get_liberties, is_dangerous_liberty, get_num_groups_with_k_liberties
 from numpy.random import normal
-"""
-Evaluation functions for search_agent.
-"""
 
 
 def evaluate(board: Board, color):
-    """Color has the next action"""
-    # Score for win or lose
-    score_win = 1000 - board.counter_move  # Prefer faster game
+    
+    score_win = 1000 - board.counter_move  
     if board.winner:
         return score_win if board.winner == color else -score_win
 
     oppo = opponent_color(color)
-    # Score for endangered groups
+    
     num_endangered_self, num_endangered_oppo = get_num_endangered_groups(board, color)
     if num_endangered_oppo > 0:
-        return score_win - 10  # Win in the next move
+        return score_win - 10 
     elif num_endangered_self > 1:
-        return -(score_win - 10)  # Lose in the next move
+        return -(score_win - 10) 
 
-    # Score for dangerous liberties
+   
     liberties_self, liberties_oppo = get_liberties(board, color)
     for liberty in liberties_oppo:
         if is_dangerous_liberty(board, liberty, oppo):
-            return score_win / 2  # Good probability to win in the next next move
+            return score_win / 2  
     for liberty in liberties_self:
         if is_dangerous_liberty(board, liberty, color):
             self_groups = board.libertydict.get_groups(color, liberty)
@@ -36,13 +32,12 @@ def evaluate(board: Board, color):
                     able_to_save = True
                     break
             if not able_to_save:
-                return -score_win / 2  # Good probability to lose in the next next move
-
-    # Score for groups
+                return -score_win / 2 
+            
     num_groups_2lbt_self, num_groups_2lbt_oppo = get_num_groups_with_k_liberties(board, color, 2)
     score_groups = num_groups_2lbt_oppo - num_groups_2lbt_self
 
-    # Score for liberties
+   
     num_shared_liberties_self = 0
     num_shared_liberties_oppo = 0
     for liberty in liberties_self:
